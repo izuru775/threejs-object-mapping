@@ -12,9 +12,9 @@
     "axios": "^0.24.0",
     "cannon": "^0.6.2",
     "react": "^17.0.2",
-    "react-three-fiber": "^5.3.22",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "react-three-fiber": "^5.3.22",
     "three": "^0.135.0",
     "use-cannon": "^0.5.3",
     "web-vitals": "^1.1.2"
@@ -25,6 +25,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:3001",
   "eslintConfig": {
     "extends": [
       "react-app",

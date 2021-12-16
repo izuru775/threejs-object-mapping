@@ -57,7 +57,7 @@ export const Player = (props) => {
     [api.velocity]
   );
   useFrame(() => {
-    console.log(ref.current.position)
+    // console.log(ref.current.position)
     camera.position.copy(ref.current.position);
     frontVector.set(0, 0, Number(backward) - Number(forward));
     sideVector.set(Number(left) - Number(right), 0, 0);

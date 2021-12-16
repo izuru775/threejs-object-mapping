@@ -1,6 +1,6 @@
 import "./App.css";
 import * as THREE from "three";
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { Player } from "./Player";
 import { Canvas, useLoader } from "@react-three/fiber";
 import {
@@ -15,42 +15,7 @@ import Ground from "./assets/rough-ground.jpg";
 import { IceCream } from "./IcecreamCart";
 import { Statue } from "./Statue";
 import { Plane } from "./Plane";
-
-const statueData = {
-  Name: "statue",
-  Creator: "unkown",
-  vrObject: [
-    {
-      url: "statue.fbx",
-      position: [-100, 0, 15],
-      scale: [0.05, 0.05, 0.05],
-      rotation: [-Math.PI / 2, 0, 0],
-    },
-  ],
-};
-const cartData = {
-  Name: "icecream-cart",
-  Creator: "unkown",
-  vrObject: [
-    {
-      url: "icecream.fbx",
-      position: [50, 0, 10],
-      scale: [0.05, 0.05, 0.05],
-      rotation: [-Math.PI / 2, 0, 0],
-    },
-  ],
-};
-const planeData = {
-  Name: "plane",
-  Creator: "unkown",
-  vrObject: [
-    {
-      url: "",
-      position: [0, 0, 0],
-      rotation: [-Math.PI / 2, 0, 0],
-    },
-  ],
-};
+import axios from "axios";
 
 // function Box() {
 //   const [ref, api] = useBox(() => ({ mass: 1, position: [0, 2, 0] }));
@@ -69,6 +34,24 @@ const planeData = {
 // }
 
 function App() {
+  const baseURL = "/api";
+    const [objects, setObjects] = useState();
+    axios
+      .get(baseURL)
+      .then((result) => {
+        if (result.data.data[0].environmentName === "VRPlane") {
+          const { environmentName, environmentCreator, vrObject } =
+            result.data.data[0];
+          const { url, position, scale, rotation } = vrObject[0];
+          console.log(url)
+          let fbx = useFBX("icecream.fbx");
+          (<mesh>
+            <primitive object={fbx} dispose={null} />
+          </mesh>)
+        }
+      })
+      .catch((err) => console.log(err));
+
   return (
     <Canvas camera={{ fov: 35 }}>
       <Sky sunPosition={[100, 5, 50]} />
@@ -76,19 +59,16 @@ function App() {
       <pointLight castShadow intensity={0.8} position={[100, 100, 100]} />
       <Physics gravity={[0, -30, 0]}>
         <Suspense>
-          <mesh
-            position={planeData.vrObject[0].position}
-            rotation={planeData.vrObject[0].rotation}
-          >
+          <mesh position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}>
             <Plane />
           </mesh>
         </Suspense>
 
         <Suspense>
           <mesh
-            rotation={cartData.vrObject[0].rotation}
-            position={cartData.vrObject[0].position}
-            scale={cartData.vrObject[0].scale}
+            rotation={[-Math.PI / 2, 0, 0]}
+            position={[50, 0, 10]}
+            scale={[[0.05, 0.05, 0.05]]}
           >
             <IceCream />
           </mesh>
@@ -96,9 +76,9 @@ function App() {
 
         <Suspense>
           <mesh
-            rotation={statueData.vrObject[0].rotation}
-            position={statueData.vrObject[0].position}
-            scale={statueData.vrObject[0].scale}
+            rotation={[-Math.PI / 2, 0, 0]}
+            position={[-30, 0, 20]}
+            scale={[0.05, 0.05, 0.05]}
           >
             <Statue />
           </mesh>
