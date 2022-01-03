@@ -12,10 +12,10 @@ import {
 } from "@react-three/drei";
 import { Physics, useBox, usePlane } from "@react-three/cannon";
 import Ground from "./assets/rough-ground.jpg";
-import { Statue } from "./Statue";
+
 import { Plane } from "./Plane";
 import axios from "axios";
-import { Vespa } from "./Vespa";
+
 // function Box() {
 //   const [ref, api] = useBox(() => ({ mass: 1, position: [0, 2, 0] }));
 //   return (
@@ -58,21 +58,7 @@ function App() {
             <Plane />
           </mesh>
         </Suspense>
-
-        <Suspense>
-          <mesh
-            rotation={[-Math.PI / 2, 0, 0]}
-            position={[-30, 0, 20]}
-            scale={[0.05, 0.05, 0.05]}
-          >
-            <Statue />
-          </mesh>
-        </Suspense>
-        <Suspense>
-          <mesh position={[-50, 0, 10]}>
-            <Vespa/>
-          </mesh>
-        </Suspense>
+        
 
         {/* <OrbitControls /> */}
         <Player />
