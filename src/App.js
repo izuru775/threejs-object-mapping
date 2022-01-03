@@ -31,22 +31,28 @@ import axios from "axios";
 //     </mesh>
 //   );
 // }
+const Model = () => {
+  const fbx = useFBX("https://vespascooter.s3.ap-southeast-2.amazonaws.com/vespa.fbx");
+  return (
+    <>
+     <primitive object={fbx} dispose={null} />;
+    </>
+  );
+};
 
 function App() {
   const baseURL = "/api";
-    const [objects, setObjects] = useState();
-    axios
-      .get(baseURL)
-      .then((result) => {
-        if (result.data.data[0].environmentName === "VRPlane") {
-          const { environmentName, environmentCreator, vrObject } =
-            result.data.data[0];
-          const { url, position, scale, rotation } = vrObject[0];
-          console.log(url);
-        }
-      })
-      .catch((err) => console.log(err));
-
+  axios
+    .get(baseURL)
+    .then((result) => {
+      if (result.data.data[0].environmentName === "VRPlane") {
+        const { environmentName, environmentCreator, vrObject } =
+          result.data.data[0];
+        const { url, position, scale, rotation } = vrObject[0];
+      }
+    })
+    .catch((err) => console.log(err));
+    
   return (
     <Canvas camera={{ fov: 35 }}>
       <Sky sunPosition={[100, 5, 50]} />
@@ -58,7 +64,12 @@ function App() {
             <Plane />
           </mesh>
         </Suspense>
-        
+
+        <Suspense>
+          <mesh scale={[0.10, 0.10, 0.10]} position={[20, 0, -15]}>
+            <Model/>
+          </mesh>
+        </Suspense>
 
         {/* <OrbitControls /> */}
         <Player />
